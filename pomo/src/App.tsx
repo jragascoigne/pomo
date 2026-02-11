@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Timer from './Timer.tsx'
 import Count from './Count.tsx'
+import Friend from './Friend.tsx'
 import './App.css'
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
         </div>
       </div>
 
-      <div className='timer-wrapper'>
+      <div className='wrapper'>
         <Timer 
           timer={timer}
           setTimer={setTimer}
@@ -25,6 +26,8 @@ function App() {
           setIsTimerActive={setIsTimerActive}
         />
         <Count timer={timer} />
+      <Friend />
+
       </div>
 
       <div className="footer">

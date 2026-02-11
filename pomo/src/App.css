@@ -31,7 +31,7 @@
   background-color: var(--purple);
 }
 
-.timer-wrapper {
+.wrapper {
   display: flex;
   justify-content: center;
   align-items: center;

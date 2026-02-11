@@ -3,8 +3,8 @@ import './timer.css'
 
 function tick(setTimer: (timer: number) => void, timer: number) {
     setTimeout(() => {
-        setTimer(timer - 1)
-    }, 1000)
+        setTimer(timer - 0.1)
+    }, 100)
 }
 
 interface TimerProps {
@@ -27,7 +27,7 @@ function Timer({ timer, setTimer, isTimerActive, setIsTimerActive }: TimerProps)
     const minutes = Math.floor((timer % 3600) / 60);
     const seconds = timer % 60;
     
-    const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toFixed(0).padStart(2, '0')}`;
     document.title = `${formattedTime} - (:-:)::`
 
     return (
