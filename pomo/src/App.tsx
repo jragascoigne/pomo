@@ -26,6 +26,10 @@ function App() {
         />
         <Count timer={timer} />
       </div>
+
+      <div className="footer">
+        <a href='https://jra.onl/' target='_'>jra.onl</a> |c| john gascoigne 2026
+      </div>
     </>
   )
 }

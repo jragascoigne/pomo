@@ -28,6 +28,7 @@ function Timer({ timer, setTimer, isTimerActive, setIsTimerActive }: TimerProps)
     const seconds = timer % 60;
     
     const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    document.title = `${formattedTime} - (:-:)::`
 
     return (
         <div className="timer-container">

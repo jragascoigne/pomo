@@ -15,7 +15,7 @@ function Count({ timer }: CountProps) {
     }
   }, [timer])
 
-  return <div className='count-container'>Laps : {count}</div>
+  return <div className='count-container'>food : {count}</div>
 }
 
 export default Count
