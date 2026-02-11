@@ -1,21 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import './App.css'
-import './count.css'
 
 interface CountProps {
   timer: number
+  count: number
+  setCount: (count: number) => void
 }
 
-function Count({ timer }: CountProps) {
-  const [count, setCount] = useState(0)
-
+function Count({ timer, count, setCount }: CountProps) {
   useEffect(() => {
-    if (timer === 0) {
-      setCount(prevCount => prevCount + 1)
+    if (timer <= 0) {
+      setCount(count + 1)
     }
-  }, [timer])
+  }, [timer, count, setCount])
 
-  return <div className='count-container'>food : {count}</div>
 }
 
 export default Count

@@ -33,9 +33,11 @@
 
 .wrapper {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   height: 70%;
+  gap: 24px;
 }
 
 .footer {
