@@ -1,0 +1,22 @@
+.timer-container {
+    padding: 24px;
+    width: max-content;
+    height: max-content;
+    border: 2px dashed var(--purple);
+    color: var(--purple);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+button {
+    text-transform: uppercase;
+    padding: 16px;
+    background-color: transparent;
+    border: 2px solid var(--purple);
+    color: var(--purple);
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 16px;
+}
