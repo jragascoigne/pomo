@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import './App.css'
-import './timer.css'
+import './css/App.css'
+import './css/Timer.css'
 
 function tick(setTimer: (timer: number) => void, timer: number) {
     setTimeout(() => {

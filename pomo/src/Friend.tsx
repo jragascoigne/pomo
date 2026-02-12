@@ -1,4 +1,4 @@
-import './friend.css'
+import './css/Friend.css'
 
 interface FriendProps {
     count: number
@@ -17,7 +17,7 @@ function handleFace(count: number, justFed: boolean): string {
 function Friend({ count, justFed }: FriendProps) {
     return (
         <div className="friend">
-            .a___ a,<br />
+            .a______ a,<br />
             {handleFace(count, justFed)} 
         </div>
     );

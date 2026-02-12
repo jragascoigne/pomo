@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import './App.css'
+import './css/App.css'
 
 interface CountProps {
   timer: number

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Timer from './Timer.tsx'
 import Count from './Count.tsx'
 import Friend from './Friend.tsx'
-import './App.css'
+import './css/App.css'
 import Feed from './Feed.tsx'
 
 function App() {
