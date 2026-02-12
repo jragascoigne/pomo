@@ -21,8 +21,11 @@ function Feed({ count, setCount, setJustFed }: FeedProps) {
 
     return (
         <div className='feed-container'>
-            {count} {burger.repeat(count)}
-            {canFeed(count) ? <p>Feed pomo!</p> : <p>No food...</p>}
+            {(count === 0) ? <span>NO </span> : <span>{count} </span>}
+            {(count === 1 ? <span>BURGER </span> : <span>BURGERS </span>)} 
+            {burger.repeat(count)}
+            <br />
+
             <button onClick={handleFeed} disabled={!canFeed(count)}>Feed Pomo</button>
         </div>
     )

@@ -8,6 +8,7 @@ interface FriendProps {
 function handleFace(count: number, justFed: boolean): string {
     if (justFed) {
         return 'd| : ~ : |b'
+
     }
     if (count === 0) {
     }
