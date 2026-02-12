@@ -1,3 +1,4 @@
+import { useCounterStore } from './App'
 import './css/Friend.css'
 
 interface FriendProps {
@@ -15,7 +16,10 @@ function handleFace(count: number, justFed: boolean): string {
     return 'd| : - : |b'
 }   
 
-function Friend({ count, justFed }: FriendProps) {
+function Friend() {
+    const count = useCounterStore((state) => state.count)
+    const justFed = false
+
     return (
         <div className="friend">
             .a______ a,<br />

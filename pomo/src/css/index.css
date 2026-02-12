@@ -1,0 +1,14 @@
+:root {
+  --background-colour: rgb(39, 33, 48);
+  --purple: rgb(201, 140, 204);
+  --purple-dim: rgb(113, 89, 145);
+}
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}

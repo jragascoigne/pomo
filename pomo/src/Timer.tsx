@@ -4,6 +4,7 @@ import './css/App.css'
 import './css/Timer.css'
 
 import { useTimer } from 'react-timer-hook';
+import { useCounterStore } from './App';
 
 type statusType = 'Focus' | 'Break' | 'Long Break'
 
@@ -15,6 +16,8 @@ function MyTimer({ expiryTimestamp }: TimerProps) {
 
 	let [pomoStatus, setPomoStatus] = useState<statusType>('Focus')
 	let [cycleCount, setCycleCount] = useState(0)
+	
+	const increaseCount = useCounterStore((state) => state.increaseCount);
 
 	const {
 		seconds,
@@ -34,6 +37,7 @@ function MyTimer({ expiryTimestamp }: TimerProps) {
 				time.setSeconds(time.getSeconds() + 300);
 				restart(time);
 				setCycleCount(cycleCount + 1)
+				increaseCount();
 
 			if (cycleCount === 3) {
 					setPomoStatus('Long Break')
@@ -59,20 +63,28 @@ function MyTimer({ expiryTimestamp }: TimerProps) {
 	}, []);
 
 	return (
-		<div style={{textAlign: 'center'}}>
-			<p>{pomoStatus}</p>
+		<div className="timer-container" style={{textAlign: 'center'}}>
+			<span>{pomoStatus}</span>
 			<div style={{ fontSize: '100px' }}>
 				<span>{minutes.toString().padStart(2, '0')}</span>:<span>{seconds.toString().padStart(2, '0')}</span>
 			</div>
 
-			{ isRunning ? <button onClick={pause}>Pause</button> : <button onClick={resume}>Resume</button>}
+			{ isRunning ? (
+				<div className='button-wrapper'>
+					<button onClick={pause}>Pause</button> 
+				</div>
+			) : (
+				<div className='button-wrapper'>
+					<button onClick={resume}>Resume</button>
+					<button onClick={() => {
+						const time = new Date();
+						time.setSeconds(time.getSeconds() + 300);
+						restart(time);
+						pause();
+					}}>Reset</button>
+				</div>
+			)}
 
-			<button onClick={() => {
-				const time = new Date();
-				time.setSeconds(time.getSeconds() + 300);
-				restart(time);
-				pause();
-			}}>Reset</button>
 		</div>
 	);
 }

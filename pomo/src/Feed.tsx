@@ -1,32 +1,30 @@
-const burger = '≡'
+import { useCounterStore } from "./App"
 
-interface FeedProps {
-  count: number
-  setCount: (count: number) => void
-  setJustFed: (fed: boolean) => void
-}
+const burger = '≡'
 
 function canFeed(count: number): boolean {
     return count > 0
 }
 
-function Feed({ count, setCount, setJustFed }: FeedProps) {
-    const handleFeed = () => {
-        if (canFeed(count)) {
-            setCount(count - 1)
-            setJustFed(true)
-            setTimeout(() => setJustFed(false), 1000)
+function Feed() {
+    const count = useCounterStore((state) => state.count);
+    const decreaseCount = useCounterStore((state) => state.decreaseCount);
+
+    const feedPomo = () => {
+        if (count > 0) {
+            decreaseCount();
         }
     }
 
     return (
         <div className='feed-container'>
-            {(count === 0) ? <span>NO </span> : <span>{count} </span>}
-            {(count === 1 ? <span>BURGER </span> : <span>BURGERS </span>)} 
-            {burger.repeat(count)}
-            <br />
-
-            <button onClick={handleFeed} disabled={!canFeed(count)}>Feed Pomo</button>
+            <span className="feed-label">
+                {(count === 0) ? <span>NO </span> : <span>{count} </span>}
+                {(count === 1 ? <span>BURGER </span> : <span>BURGERS </span>)} 
+                {burger.repeat(count)}
+            </span>
+        
+            <button onClick={feedPomo} disabled={!canFeed(count)}>{count === 0 && "Cannot"} Feed Pomo</button>
         </div>
     )
 }
