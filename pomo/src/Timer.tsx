@@ -1,60 +1,80 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react';
+
 import './css/App.css'
 import './css/Timer.css'
 
-function tick(setTimer: (timer: number) => void, timer: number) {
-    setTimeout(() => {
-        setTimer(timer - 0.1)
-    }, 100)
+import { useTimer } from 'react-timer-hook';
+
+type statusType = 'Focus' | 'Break' | 'Long Break'
+
+type TimerProps = {
+	expiryTimestamp: Date;
 }
 
-interface TimerProps {
-  timer: number
-  setTimer: (timer: number) => void
-  isTimerActive: boolean
-  setIsTimerActive: (active: boolean) => void
+function MyTimer({ expiryTimestamp }: TimerProps) {
+
+	let [pomoStatus, setPomoStatus] = useState<statusType>('Focus')
+	let [cycleCount, setCycleCount] = useState(0)
+
+	const {
+		seconds,
+		minutes,
+		isRunning,
+		pause,
+		resume,
+		restart,
+	} = useTimer({ 
+		expiryTimestamp, 
+		onExpire: () => {
+
+			if (pomoStatus === 'Focus') {
+				setPomoStatus('Break')
+
+				const time = new Date();
+				time.setSeconds(time.getSeconds() + 300);
+				restart(time);
+				setCycleCount(cycleCount + 1)
+
+			if (cycleCount === 3) {
+					setPomoStatus('Long Break')
+
+					const time = new Date();
+					time.setSeconds(time.getSeconds() + 900);
+					restart(time);
+
+					setCycleCount(0)
+				}
+
+			} else {
+				setPomoStatus('Focus')
+				const time = new Date();
+				time.setSeconds(time.getSeconds() + 1500);
+				restart(time);
+			}
+		}
+	});
+
+	useEffect(() => {
+		pause();
+	}, []);
+
+	return (
+		<div style={{textAlign: 'center'}}>
+			<p>{pomoStatus}</p>
+			<div style={{ fontSize: '100px' }}>
+				<span>{minutes.toString().padStart(2, '0')}</span>:<span>{seconds.toString().padStart(2, '0')}</span>
+			</div>
+
+			{ isRunning ? <button onClick={pause}>Pause</button> : <button onClick={resume}>Resume</button>}
+
+			<button onClick={() => {
+				const time = new Date();
+				time.setSeconds(time.getSeconds() + 300);
+				restart(time);
+				pause();
+			}}>Reset</button>
+		</div>
+	);
 }
 
-type Status = 'Focus' | 'Break' | 'Long Break'
-
-function Timer({ timer, setTimer, isTimerActive, setIsTimerActive }: TimerProps) {
-    const [status, setStatus] = useState<Status>('Focus');
-    
-    if (isTimerActive && timer > 0) {
-        tick(setTimer, timer);
-    }
-
-    useEffect(() => {
-        if (timer <= 0) {
-            if (status === 'Focus') {
-                setStatus('Break');
-                setTimer(60 * 0.05);
-            } else if (status === 'Break') {
-                setStatus('Focus');
-                setTimer(60 * 25);
-            } else if (status === 'Long Break') {
-                setStatus('Focus');
-                setTimer(60 * 15);
-            }
-
-            setIsTimerActive(false);
-        }
-    }, [timer, status, setTimer, setIsTimerActive]);
-
-    const minutes = Math.floor((timer % 3600) / 60);
-    const seconds = Math.floor(timer % 60);
-    
-    const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toFixed(0).padStart(2, '0')}`;
-    document.title = `${formattedTime} - (:-:)::`;
-
-    return (
-        <div className="timer-container">
-            <button onClick={() => setIsTimerActive(!isTimerActive)}>
-                {isTimerActive ? `Pause ${status}` : `Resume ${status}`}
-            </button>
-            <h1>{formattedTime}</h1>
-        </div>
-    )
-}
-
-export default Timer
+export default MyTimer

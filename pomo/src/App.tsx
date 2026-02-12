@@ -1,15 +1,14 @@
 import { useState } from 'react'
-import Timer from './Timer.tsx'
-import Count from './Count.tsx'
 import Friend from './Friend.tsx'
 import './css/App.css'
 import Feed from './Feed.tsx'
+import MyTimer from './Timer.tsx'
 
 function App() {
-  const [timer, setTimer] = useState(5)
-  const [isTimerActive, setIsTimerActive] = useState(false)
   const [count, setCount] = useState(0)
   const [justFed, setJustFed] = useState(false)
+  const expiryTimestamp = new Date();
+  expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 5);
 
   return (
     <>
@@ -24,13 +23,10 @@ function App() {
 
       {/* main body */}
       <div className='wrapper'>
-        <Timer 
-          timer={timer}
-          setTimer={setTimer}
-          isTimerActive={isTimerActive}
-          setIsTimerActive={setIsTimerActive}
+        <MyTimer 
+          expiryTimestamp={expiryTimestamp}
         />
-        <Count timer={timer} count={count} setCount={setCount} />
+        {/* <Count timer={timer} count={count} setCount={setCount} /> */}
         <Feed count={count} setCount={setCount} setJustFed={setJustFed} />
         <Friend count={count} justFed={justFed} />
       </div>
