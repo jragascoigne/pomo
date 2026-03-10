@@ -12,12 +12,19 @@ type TimerProps = {
 	expiryTimestamp: Date;
 }
 
+function playSound(url) {
+  const audio = new Audio(url);
+  audio.play();
+}
+
+
 function MyTimer({ expiryTimestamp }: TimerProps) {
 
 	let [pomoStatus, setPomoStatus] = useState<statusType>('Focus')
 	let [cycleCount, setCycleCount] = useState(0)
 	
 	const increaseCount = useCounterStore((state) => state.increaseCount);
+
 
 	const {
 		seconds,
@@ -29,6 +36,8 @@ function MyTimer({ expiryTimestamp }: TimerProps) {
 	} = useTimer({ 
 		expiryTimestamp, 
 		onExpire: () => {
+
+			playSound('/static/alarm.wav')
 
 			if (pomoStatus === 'Focus') {
 				setPomoStatus('Break')
@@ -56,11 +65,17 @@ function MyTimer({ expiryTimestamp }: TimerProps) {
 				restart(time);
 			}
 		}
+
+		
 	});
 
 	useEffect(() => {
 		pause();
 	}, []);
+
+	useEffect(() => {
+	document.title = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} - ${pomoStatus}`;
+}, [minutes, seconds, pomoStatus]);
 
 	return (
 		<div className="timer-container" style={{textAlign: 'center'}}>
@@ -75,6 +90,8 @@ function MyTimer({ expiryTimestamp }: TimerProps) {
 				</div>
 			) : (
 				<div className='button-wrapper'>
+
+
 					<button onClick={resume}>Resume</button>
 					<button onClick={() => {
 						const time = new Date();

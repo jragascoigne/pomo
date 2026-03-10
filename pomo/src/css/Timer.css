@@ -1,5 +1,6 @@
 .timer-container {
     padding: 32px;
+    width: 250px;
     border: 2px dashed var(--purple-dim);
     color: var(--purple);
     display: flex;

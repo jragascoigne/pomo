@@ -20,7 +20,7 @@ export const useCounterStore = create<CounterState>()((set) => ({
 
 function App() {
 	const expiryTimestamp = new Date();
-	expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 5);
+	expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 1500);
 
 	return (
 	<>
