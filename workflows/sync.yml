@@ -1,19 +1,31 @@
-name: Sync to mirror repo
+name: Deploy to Pages repo
 
 on:
   push:
     branches: [main]
 
 jobs:
-  sync:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source repo
+      - name: Checkout pomo repo
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Checkout pages repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # fetch full history
+          repository: jragascoigne/jragascoigne.github.io
+          token: ${{ secrets.TARGET_REPO_TOKEN }}
+          path: pages-repo
 
-      - name: Push to target repo
+      - name: Copy build into subfolder
         run: |
-          git remote add target https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/jragascoigne/jragascoigne.github.io.git
-          git push target main --force
+          rm -rf pages-repo/pomo
+          mkdir -p pages-repo/pomo
+          cp -r dist/* pages-repo/pomo/   # change 'dist' if your build folder is different
