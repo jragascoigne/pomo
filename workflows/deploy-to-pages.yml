@@ -28,4 +28,4 @@ jobs:
         run: |
           rm -rf pages-repo/pomo
           mkdir -p pages-repo/pomo
-          cp -r dist/* pages-repo/pomo/   # change 'dist' if your build folder is different
+          cp -r dist/* pages-repo/pomo/
