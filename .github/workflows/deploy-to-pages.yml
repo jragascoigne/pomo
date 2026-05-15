@@ -28,4 +28,13 @@ jobs:
         run: |
           rm -rf pages-repo/pomo
           mkdir -p pages-repo/pomo
-          cp -r dist/* pages-repo/pomo/   # change 'dist' if your build folder is different
+          cp -r dist/* pages-repo/pomo/
+
+      - name: Commit and push to pages repo
+        working-directory: pages-repo
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .
+          git diff --staged --quiet || git commit -m "ci: update pomo from latest build"
+          git push
