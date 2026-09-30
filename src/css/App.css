@@ -1,70 +1,66 @@
-#root {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	min-height: 80dvh;
 }
 
-* {
-  color: var(--purple);
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: var(--background-colour);
-}
-
-.navbar {
-  height: fit-content;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-}
-
-.app-header {
-  display: flex;
-  flex-direction: row;
-  width: max-content;
-  text-wrap: nowrap;
-  color: var(--purple);
-  padding: 0 8px;
-}
-
-.app-header-divider {
-  width: 100%;
-  height: 2px;
-  background-color: var(--purple-dim);
+.timer-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 24px;
 }
 
 .pomo-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 70%;
-  gap: 24px;
-  width: fit-content;
+	position: fixed;
+	top: 50%;
+	right: 24px;
+	transform: translateY(-50%);
 }
 
 .feed-container {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-self: stretch;
-  padding: 0 32px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	width: 100%;
+	padding: 0 32px;
+	box-sizing: border-box;
+}
+
+.feed-label {
+	font: 700 14px var(--font-display);
+	letter-spacing: 0.04em;
 }
 
 .footer {
-  font-size: 12px;
-  font-family: consolas, monospace;
-  bottom: 0;
-  left: 0;
-  padding: 8px;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-
-  color: var(--purple-dim);
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	padding: 8px;
+	color: var(--purple-dim);
+	font: 12px var(--font-mono);
 }
 
 .footer a {
-  font-family: consolas, monospace;
-  color: var(--purple-dim);
+	color: inherit;
+}
+
+@media (max-width: 600px) {
+	.container {
+		flex-direction: column;
+		justify-content: flex-start;
+		min-height: 100dvh;
+		padding: 24px 0 40px;
+		box-sizing: border-box;
+	}
+
+	.pomo-wrapper {
+		position: static;
+		width: 100%;
+		margin-top: auto;
+		padding-bottom: 48px;
+		transform: none;
+	}
 }

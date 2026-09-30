@@ -12,78 +12,95 @@ type TimerProps = {
 	expiryTimestamp: Date;
 };
 
-function playSound(url: string) {
-	const audio = new Audio(url);
-	audio.play();
+function playThock(frequency: number, duration = 0.08) {
+	const context = new AudioContext();
+	const oscillator = context.createOscillator();
+	const gain = context.createGain();
+	const now = context.currentTime;
+
+	oscillator.type = "triangle";
+	oscillator.frequency.setValueAtTime(frequency, now);
+	oscillator.frequency.exponentialRampToValueAtTime(frequency / 2, now + duration);
+	gain.gain.setValueAtTime(0.001, now);
+	gain.gain.exponentialRampToValueAtTime(0.16, now + 0.004);
+	gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+	oscillator.connect(gain).connect(context.destination);
+	oscillator.onended = () => void context.close();
+	oscillator.start(now);
+	oscillator.stop(now + duration);
+}
+
+function playSuccessSound() {
+	playThock(150, 0.12);
+	setTimeout(() => playThock(110, 0.65), 140);
 }
 
 function MyTimer({ expiryTimestamp }: TimerProps) {
-	let [pomoStatus, setPomoStatus] = useState<statusType>("Focus");
-	let [cycleCount, setCycleCount] = useState(0);
+	const [pomoStatus, setPomoStatus] = useState<statusType>("Focus");
+	const [cycleCount, setCycleCount] = useState(0);
 
 	const increaseCount = useCounterStore((state) => state.increaseCount);
 
 	const { seconds, minutes, isRunning, pause, resume, restart } = useTimer({
 		expiryTimestamp,
+		autoStart: false,
 		onExpire: () => {
-			playSound("/static/alarm.wav");
+			playSuccessSound();
 
 			if (pomoStatus === "Focus") {
-				setPomoStatus("Break");
-
-				const time = new Date();
-				time.setSeconds(time.getSeconds() + 300);
-				restart(time);
-				setCycleCount(cycleCount + 1);
+				const isLongBreak = cycleCount === 2;
+				setPomoStatus(isLongBreak ? "Long Break" : "Break");
+				setCycleCount(isLongBreak ? 0 : cycleCount + 1);
 				increaseCount();
 
-				if (cycleCount === 3) {
-					setPomoStatus("Long Break");
-
-					const time = new Date();
-					time.setSeconds(time.getSeconds() + 900);
-					restart(time);
-
-					setCycleCount(0);
-				}
+				const time = new Date();
+				time.setSeconds(time.getSeconds() + (isLongBreak ? 900 : 300));
+				setTimeout(() => restart(time), 0);
 			} else {
 				setPomoStatus("Focus");
 				const time = new Date();
 				time.setSeconds(time.getSeconds() + 1500);
-				restart(time);
+				setTimeout(() => restart(time), 0);
 			}
 		},
 	});
 
 	useEffect(() => {
-		pause();
-	}, []);
-
-	useEffect(() => {
 		document.title = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")} - ${pomoStatus}`;
 	}, [minutes, seconds, pomoStatus]);
 
+	const startTimer = () => {
+		playThock(220);
+		resume();
+	};
+
+	const stopTimer = () => {
+		playThock(110);
+		pause();
+	};
+
 	return (
 		<div className="timer-container" style={{ textAlign: "center" }}>
-			<span>{pomoStatus}</span>
-			<div style={{ fontSize: "100px" }}>
+			<span className="timer-status">{pomoStatus}</span>
+			<div className="timer-display">
 				<span>{minutes.toString().padStart(2, "0")}</span>:
 				<span>{seconds.toString().padStart(2, "0")}</span>
 			</div>
 
 			{isRunning ? (
 				<div className="button-wrapper">
-					<button onClick={pause}>Pause</button>
+					<button onClick={stopTimer}>Pause</button>
 				</div>
 			) : (
 				<div className="button-wrapper">
-					<button onClick={resume}>Resume</button>
+					<button onClick={startTimer}>Resume</button>
 					<button
 						onClick={() => {
+							setPomoStatus("Focus");
+							setCycleCount(0);
 							const time = new Date();
-							time.setSeconds(time.getSeconds() + 300);
-							restart(time);
-							pause();
+							time.setSeconds(time.getSeconds() + 1500);
+							restart(time, false);
 						}}
 					>
 						Reset

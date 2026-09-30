@@ -1,7 +1,83 @@
 .friend {
-    font-family: Consolas, monospace;
-    position: fixed;
-    right: 0;
-    padding: 10px;
-    font-size: 40px;
+	padding: 10px;
+	font: 400 40px var(--font-mono);
+}
+
+.name-input {
+	position: relative;
+	width: 192px;
+}
+
+.name {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 8px 30px 8px 8px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	background: transparent;
+	color: inherit;
+	font: 700 28px/1.1 var(--font-display);
+	transition: border-color 150ms ease;
+}
+
+.name-input:hover .name,
+.name-input:focus-within .name {
+	border-color: var(--purple-dim);
+}
+
+.name-icon {
+	position: absolute;
+	top: 50%;
+	right: 8px;
+	transform: translateY(-50%);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 150ms ease;
+}
+
+.name-input:hover .name-icon,
+.name-input:focus-within .name-icon {
+	opacity: 1;
+}
+
+.health {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-top: 12px;
+	font: 12px var(--font-body);
+}
+
+.health-bar {
+	width: 180px;
+	height: 10px;
+	border-radius: 999px;
+	background: var(--purple-dim);
+	overflow: hidden;
+}
+
+
+.health-fill {
+	height: 100%;
+	border-radius: inherit;
+	background: var(--purple);
+	transition: width 150ms ease;
+}
+
+@media (max-width: 600px) {
+	.friend {
+		position: static;
+		width: fit-content;
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	.name-input {
+		margin: 0 auto;
+	}
+
+	.health {
+		align-items: center;
+		text-align: center;
+	}
 }
