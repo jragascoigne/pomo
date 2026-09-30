@@ -1,3 +1,7 @@
+pomo-study buddy
+
+check it out: https://jra.onl/pomo/
+
 states:
 
 focus! - > 25 mins of work
